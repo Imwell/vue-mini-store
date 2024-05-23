@@ -78,10 +78,10 @@
         Login
       </el-button>
 
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
+<!--      <div class="tips">-->
+<!--        <span style="margin-right:20px;">username: admin</span>-->
+<!--        <span> password: any</span>-->
+<!--      </div>-->
 
     </el-form>
   </div>
@@ -89,6 +89,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { sendSmsCode } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -110,7 +111,9 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '111111',
+        code: '',
+        wid: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -137,16 +140,14 @@ export default {
         return // 防止重复点击发送
       }
 
-      // 假设在这个方法中实现发送验证码的逻辑
-      // 可以调用sendVerificationCode()方法发送验证码
-      // 这里只是简单模拟发送过程
       this.isSending = true
       this.startCountdown()
-
-      setTimeout(() => {
-        // 假设发送成功后将isSending重置为false
+      sendSmsCode({
+        mobile: this.loginForm.username,
+        auth: ''
+      }).then(res => {
         this.isSending = false
-      }, 2000) // 这里使用2秒的延迟来模拟发送过程，你需要替换为实际的发送逻辑
+      })
     },
     startCountdown() {
       this.countdown = 60

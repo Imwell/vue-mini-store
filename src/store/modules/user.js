@@ -1,12 +1,13 @@
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setMobile, getMobile } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    mobile: getMobile()
   }
 }
 
@@ -22,6 +23,9 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
+  SET_MOBILE: (state, mobile) => {
+    state.mobile = mobile
+  },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   }
@@ -30,12 +34,13 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, code, wid } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+      login({ username: username.trim(), password: password, code: code, wid: wid }).then(response => {
+        commit('SET_MOBILE', username)
+        commit('SET_TOKEN', 'admin-token')
+        setToken('admin-token')
+        setMobile(username)
         resolve()
       }).catch(error => {
         reject(error)
@@ -46,6 +51,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+
       getInfo(state.token).then(response => {
         const { data } = response
 
@@ -67,7 +73,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout(state.mobile).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')

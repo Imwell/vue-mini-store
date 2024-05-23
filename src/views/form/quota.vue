@@ -1,21 +1,23 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="mobile">
+      <el-form-item prop="mobile" label="mobile">
         <el-input v-model="form.mobile" />
       </el-form-item>
-      <el-form-item label="quota">
+      <el-form-item prop="quota" label="quota">
         <el-input v-model.number="form.quota" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">提交</el-button>
-        <el-button @click="onCancel">取消</el-button>
+        <el-button @click="onCancel">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { buy, updateQuota } from '@/api/table'
+
 export default {
   data() {
     return {
@@ -27,13 +29,15 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$message('submit!')
+      updateQuota(this.form).then(res => {
+        if (res.status === 200) {
+          this.$message.success('成功')
+          this.$refs['form'].resetFields()
+        }
+      })
     },
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+      this.$refs['form'].resetFields()
     }
   }
 }

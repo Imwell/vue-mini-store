@@ -14,7 +14,7 @@ const data = Mock.mock({
 
 module.exports = [
   {
-    url: '/vue-admin-template/table/list',
+    url: '/getUsers',
     type: 'get',
     response: config => {
       const items = data.items
@@ -24,6 +24,60 @@ module.exports = [
           total: items.length,
           items: items
         }
+      }
+    }
+  },
+  {
+    url: '/getOrders',
+    type: 'get',
+    response: config => {
+      const items = data.items
+      return {
+        code: 20000,
+        data: {
+          total: items.length,
+          items: items
+        }
+      }
+    }
+  },
+  {
+    url: '/logout',
+    type: 'post',
+    response: config => {
+      return {
+        status: 200,
+        message: ''
+      }
+    }
+  },
+  {
+    url: '/login',
+    type: 'post',
+    response: config => {
+      return {
+        status: 200,
+        message: ''
+      }
+    }
+  },
+  {
+    url: '/buyDiamond',
+    type: 'post',
+    response: config => {
+      return {
+        status: 200,
+        message: ''
+      }
+    }
+  },
+  {
+    url: '/updateQuota',
+    type: 'post',
+    response: config => {
+      return {
+        status: 200,
+        message: ''
       }
     }
   }

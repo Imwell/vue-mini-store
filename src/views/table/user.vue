@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getUserList } from '@/api/table'
 
 export default {
   filters: {
@@ -73,7 +73,9 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
+      getUserList({
+        offset: 0, limit: 2
+      }).then(response => {
         this.list = response.data.items
         this.listLoading = false
       })

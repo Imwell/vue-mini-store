@@ -2,7 +2,15 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/login',
+    method: 'post',
+    data
+  })
+}
+
+export function sendSmsCode(data) {
+  return request({
+    url: '/sendSmsCode',
     method: 'post',
     data
   })
@@ -16,9 +24,12 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
+export function logout(v) {
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: '/logout',
+    method: 'post',
+    data: {
+      mobile: v
+    }
   })
 }
